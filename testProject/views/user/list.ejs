@@ -1,0 +1,53 @@
+<div class="container site-container">
+    <table id="user-list-table" class="table table-striped users-list-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Avatar</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Display Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Social</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            <% _.each(users, function (user, key) { %>
+                <tr>
+                    <td><%= key %></td>
+                    <td><img src="<%- user.avatarUrl %>" class="img-circle site-avatar-small" /></td>
+                    <td>
+                       <%= user.firstName ? user.firstName : '' %>
+                    </td>
+                    <td><%= user.lastName ? user.lastName : '' %></td>
+                    <td> <a href="<%= '/user/profile/' + user.id %>"><%= user.displayName %></a></td>
+                    <td><a href="mailto:<%= user.email ? user.email : '' %>"><%= user.email ? user.email : '' %></a></td>
+                    <td data-user-role="<%- user.id %>"><%= getRole(user.role) %></td>
+                    <td>
+                        <a href="<%- user.socialUrl %>" target="_blank" class="btn btn-social-icon btn-<%- user.provider -%>">
+                            <i class="fa fa-<%- user.provider %>"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/user/profile/<%- user.id %>">Show</a></li>
+                                <li><a href="/user/edit/<%- user.id %>">Edit</a></li>
+                                <li><a href="#">Ban</a></li>
+                                <li class="delegate-assigne-role" data-user-id="<%- user.id %>" ><a href="#">Assigne Role</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Delete</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="assigne-role-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    </div>
+</div>

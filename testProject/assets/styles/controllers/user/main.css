@@ -1,0 +1,12 @@
+.sign-up-page-container {
+    background-image: url('http://fc05.deviantart.net/fs71/i/2012/341/d/b/teemo_by_renusch-d5nbsgq.jpg');
+    background-repeat: repeat-x;
+    padding-bottom: 180px;
+}
+
+.edit-page-container {
+    background-image: url('http://fc08.deviantart.net/fs70/i/2013/155/1/f/jarvan_4___league_of_legends_by_oxide23-d5p2s6a.jpg');
+    background-repeat: no-repeat;
+    padding-bottom: 180px;
+    background-size: cover;
+}

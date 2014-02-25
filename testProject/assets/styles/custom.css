@@ -1,0 +1,28 @@
+.site-container {
+    margin-top: 75px;
+}
+
+.site-footer {
+    background-color: #F5F5F5;
+    bottom: 0;
+    height: 60px;
+    position: fixed;
+    width: 100%;
+    padding-top: 20px;
+}
+
+.site-avatar-small {
+    width : 40px;
+    height : 40px;
+}
+
+.site-nav-avatar {
+    position: absolute;
+    right: 5px;
+    top: 1px;
+    cursor: pointer;
+}
+.site-avatar-medium {
+    width: 60px;
+    height: 60px;
+}
