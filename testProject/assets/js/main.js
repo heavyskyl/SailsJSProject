@@ -4,8 +4,8 @@
 
     socket.on('connect', function() {
 
-        socket.request('/foo', {}, function(foos) {
-            console.log(foos);
+        socket.request('/user', {}, function(users) {
+            console.log(users);
         });
 
         socket.on('message', function(message) {

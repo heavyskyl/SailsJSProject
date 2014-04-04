@@ -8,25 +8,46 @@
 
 module.exports = {
 
+    getStyles : function(controller, action) {
+        var stylesHTML = '',
+            settings,
+            cssFiles;
 
-    getScripts : function(jsFiles) {
-        var scriptsHTML = '';
+        if (!controller) return '';
 
-        jsFiles.forEach(function(url) {
-            scriptsHTML += '<script type="text/javascript" src="' + url + '" ></script>';
-        });
+        settings = require('../settings/' + controller + '.js');
+        cssFiles = settings.styles.main;
 
-        return scriptsHTML;
-    },
-
-    getStyles : function(cssFiles) {
-        var stylesHTML = '';
+        if (action && (action in settings.styles)) {
+            cssFiles = cssFiles.concat(settings.styles[action]);
+        }
 
         cssFiles.forEach(function(url) {
             stylesHTML += '<link rel="stylesheet" href="' + url + '" />';
         });
 
         return stylesHTML;
+    },
+
+    getScripts : function(controller, action) {
+        var scriptsHTML = '',
+            settings,
+            jsFiles;
+
+        if (!controller) return '';
+
+        settings = require('../settings/' + controller + '.js');
+        jsFiles = settings.scripts.main;
+
+        if (action && (action in settings.scripts)) {
+            jsFiles = jsFiles.concat(settings.scripts[action]);
+        }
+
+        jsFiles.forEach(function(url) {
+            scriptsHTML += '<script type="text/javascript" src="' + url + '" ></script>';
+        });
+
+        return scriptsHTML;
     }
 
 };

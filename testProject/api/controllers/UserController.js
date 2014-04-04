@@ -15,15 +15,6 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
-var scripts = [
-    '/js/jquery.validate.min.js',
-    '/js/controllers/user/main.js'
-];
-
-var styles = [
-    '/styles/controllers/user/main.css'
-];
-
 function getRole(role) {
     switch(role) {
         case 100 :
@@ -45,18 +36,6 @@ function getRole(role) {
 }
 
 module.exports = {
-
-    'getScripts' : function(layoutSecurityFlag) {
-        if (layoutSecurityFlag === true) {
-            return LayoutService.getScripts(scripts);
-        }
-    },
-
-    'getStyles' : function(layoutSecurityFlag) {
-        if (layoutSecurityFlag === true) {
-            return LayoutService.getStyles(styles);
-        }
-    },
 
     'setRole' : function(req, res, next) {
         var params = req.params.all();

@@ -35,27 +35,7 @@ function getRole(role) {
     }
 }
 
-var styles = [
-    '/styles/controllers/admin/main.css'
-];
-
-var scripts = [
-    '/js/controllers/admin/main.js'
-];
-
 module.exports = {
-
-    'getScripts' : function(layoutSecurityFlag) {
-        if (layoutSecurityFlag === true) {
-            return LayoutService.getScripts(scripts);
-        }
-    },
-
-    'getStyles' : function(layoutSecurityFlag) {
-        if (layoutSecurityFlag === true) {
-            return LayoutService.getStyles(styles);
-        }
-    },
 
     /**
      * Action blueprints:
@@ -68,7 +48,8 @@ module.exports = {
 
             res.view({
                 _layoutFile: '../adminlayout.ejs',
-                users: users,
+                users : users,
+                usersCount : users.length,
                 getRole: getRole
             });
         });
@@ -77,12 +58,12 @@ module.exports = {
 
     dashboard : function(req, res) {
 
-        User.find().done(function (err, users) {
+        User.count().done(function (err, count) {
             if (err) return next(err);
 
             res.view({
                 _layoutFile: '../adminlayout.ejs',
-                users: users,
+                usersCount: count,
                 getRole: getRole
             });
         });
