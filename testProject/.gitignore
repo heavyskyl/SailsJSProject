@@ -2,4 +2,6 @@
 # Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
 assets/admin
 assets/site
+node_modules
 .tmp
+.idea
