@@ -1,27 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <!--
-        For demonstration purposes, the `title` is dynamically set here based on
-        your `sails.config.appName` to show that you can inject data into layouts
-        exactly the same way as with your other view templates.
-    -->
-    <title>
-        <%- title %>
-    </title>
+<% include ../assets/site/index.html %>
 
-    <!-- Viewport mobile tag for sensible mobile support -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-    <!--
-
-      Stylesheets
-      ========================
-
-      You can link any CSS, LESS, or image files in your `assets` directory
-      as you would normally: using <link/> tags.
-      
-    -->
+<!--
     <link rel="stylesheet" href="/bootstrap-3.1.1-dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/bootstrap-3.1.1-dist/css/bootstrap-theme.min.css"/>
     <link rel="stylesheet" href="/font-awesome-4.0.3/css/font-awesome.min.css"/>
@@ -30,207 +9,20 @@
 
     <%- sails.services.layoutservice.getStyles(req.target.controller, req.target.action) %>
 
-    <!--
 
-      Support for LESS included by default
-      ================================================
-
-      LESS files are automatically compiled when they change using the Gruntfile
-      located in the top-level of this Sails app.  If you run into issues with styles
-      not reloading, check the Sails log output in your console for LESS compilation errors.
-      If necessary, shut down and then lift your app again.
-      
-    -->
-
-</head>
-
-<body>
-
-    <div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="/" class="navbar-brand">Project name</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="<%- (req.target.controller == null) ? 'active' : '' %>">
-                        <a href="/">Home</a>
-                    </li>
-                    <% if(req.isAuthenticated() && (req.user.role >= 300)) { %>
-                    <li class="<%- (req.target.controller === 'admin') ? 'active' : '' %>">
-                        <a href="/admin/dashboard">Admin Panel</a>
-                    </li>
-                    <% } %>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <% if (req.isAuthenticated()) { %>
-                        <li>
-                            <a href="/user/profile/<%- req.user.id %>">
-                                <img src="<%- req.user.avatarUrl %>" class="img-circle site-avatar-medium site-nav-avatar" />
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/auth/logout">Log Out</a>
-                        </li>
-                    <% } else { %>
-                        <li><a href="/user/new">Sign Up</a></li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
-                            <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px; width: 400px;">
-
-                                <div id="loginbox" class="mainbox">
-                                    <div class="panel panel-info" >
-                                        <div class="panel-heading">
-                                            <div class="panel-title">Sign In</div>
-                                            <div style="float:right; font-size: 80%; position: relative; top:-18px"><a href="#">Forgot password?</a></div>
-                                        </div>
-
-                                        <div style="padding-top:30px" class="panel-body" >
-
-                                            <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-
-                                            <form id="loginform" class="form-horizontal" role="form" action="/auth/local" method="POST">
-
-                                                <div style="margin-bottom: 25px" class="input-group">
-                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                                    <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username or email">
-                                                </div>
-
-                                                <div style="margin-bottom: 25px" class="input-group">
-                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                                    <input id="login-password" type="password" class="form-control" name="password" placeholder="password" />
-                                                </div>
-
-
-
-                                                <div class="input-group">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-
-                                                <div style="margin-top:10px" class="form-group">
-                                                    <!-- Button -->
-
-                                                    <div class="col-sm-12 controls">
-                                                        <input type="submit" id="btn-login" href="#" class="btn btn-success" value="Login" />
-                                                        <a href="/auth/github" class="btn btn-social-icon btn-github">
-                                                            <i class="fa fa-github"></i>
-                                                        </a>
-                                                        <a href="auth/google-plus" class="btn btn-social-icon btn-google-plus">
-                                                            <i class="fa fa-google-plus"></i>
-                                                        </a>
-                                                        <a class="btn btn-social-icon btn-facebook"><i class="fa fa-facebook"></i></a>
-                                                        <a class="btn btn-social-icon btn-vk"><i class="fa fa-vk"></i></a>
-                                                        <a class="btn btn-social-icon btn-twitter"><i class="fa fa-twitter"></i></a>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-group">
-                                                    <div class="col-md-12 control">
-                                                        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
-                                                            Don't have an account!
-                                                            <a href="/user/new">
-                                                                Sign Up Here
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" name="_csrf" value="<%= _csrf %>" />
-                                            </form>
-
-
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </li>
-                    <% } %>
-                </ul>
-            </div>
-            <!--/.navbar-collapse -->
-        </div>
-    </div>
-
-    <!-- Include the view file for the current controller/route -->
-
-    <%- body %>
-
-    <div id="footer" class="site-footer">
-        <div class="container">
-            <p class="text-muted">Place sticky footer content here.</p>
-        </div>
-    </div>
-
-    <!--
-
-      Client-side Javascript
-      ========================
-
-      You can import any js files in your `assets` directory as you would
-      normally: using <script></script> tags.
-
-      Here's an example of importing a few dependencies, in order:
-    -->
-    <!-- Bring in the socket.io client -->
     <script type="text/javascript" src="/js/socket.io.js"></script>
-    <!-- then beef it up with some convenience logic for talking to Sails.js -->
+
     <script type="text/javascript" src="/js/sails.io.js"></script>
-    <!-- listen on socket.io for incoming messages -->
+
     <script type="text/javascript" src="/js/app.js"></script>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+
     <script type="text/javascript" src="/js/jquery-2.1.0.min.js"></script>
 
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+
     <script src="/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
 
     <script type="text/javascript" src="/js/main.js"></script>
-    <!-- Your scripts here? -->
-    <!-- Your scripts here? -->
-    <!-- Your scripts here? -->
 
     <%- sails.services.layoutservice.getScripts(req.target.controller, req.target.action) %>
-
-    <!--
-
-      Looking for client-side CoffeeScript or TypeScript?
-      ================================================
-
-      CoffeeScript and TypeScript precompilation are not installed by default,
-      but if you'd like to mix those features in, it is straightforward to
-      `npm install` the relevant grunt community modules and modify your Gruntfile
-      to use them.
-
-    -->
-
-
-    <!--
-
-      Another way: The Asset Linker
-      ========================
-
-      Sails supports a Grunt-based asset linker, to automatically inject
-      <link> and <script> tags, as well any client-side templates you're using
-      into your HTML layouts and views, respecting dependencies.
-
-      You created this Sails app with the asset linker disabled.
-      If you change your mind, check out the docs on the subject:
-      http://sailsjs.org/#!documentation/asset-management
-
-    -->
-
-</body>
-</html>
+-->
