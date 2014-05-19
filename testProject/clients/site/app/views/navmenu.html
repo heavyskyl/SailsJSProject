@@ -1,0 +1,116 @@
+<header role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">Project name</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="">
+                    <a href="/">Home</a>
+                </li>
+
+                <li class="">
+                    <a href="/admin/dashboard">Admin Panel</a>
+                </li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/user/profile/<%- req.user.id %>">
+                        <img src="" class="img-circle site-avatar-medium site-nav-avatar" />
+                    </a>
+                </li>
+                <li>
+                    <a href="/auth/logout">Log Out</a>
+                </li>
+
+                <li><a href="/user/new">Sign Up</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
+                    <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px; width: 400px;">
+
+                        <div id="loginbox" class="mainbox">
+                            <div class="panel panel-info" >
+                                <div class="panel-heading">
+                                    <div class="panel-title">Sign In</div>
+                                    <div style="float:right; font-size: 80%; position: relative; top:-18px"><a href="#">Forgot password?</a></div>
+                                </div>
+
+                                <div style="padding-top:30px" class="panel-body" >
+
+                                    <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+
+                                    <form id="loginform" class="form-horizontal" role="form" action="/auth/local" method="POST">
+
+                                        <div style="margin-bottom: 25px" class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username or email">
+                                        </div>
+
+                                        <div style="margin-bottom: 25px" class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                            <input id="login-password" type="password" class="form-control" name="password" placeholder="password" />
+                                        </div>
+
+
+
+                                        <div class="input-group">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                                                </label>
+                                            </div>
+                                        </div>
+
+
+                                        <div style="margin-top:10px" class="form-group">
+                                            <!-- Button -->
+
+                                            <div class="col-sm-12 controls">
+                                                <input type="submit" id="btn-login" href="#" class="btn btn-success" value="Login" />
+                                                <a href="/auth/github" class="btn btn-social-icon btn-github">
+                                                    <i class="fa fa-github"></i>
+                                                </a>
+                                                <a href="auth/google-plus" class="btn btn-social-icon btn-google-plus">
+                                                    <i class="fa fa-google-plus"></i>
+                                                </a>
+                                                <a class="btn btn-social-icon btn-facebook"><i class="fa fa-facebook"></i></a>
+                                                <a class="btn btn-social-icon btn-vk"><i class="fa fa-vk"></i></a>
+                                                <a class="btn btn-social-icon btn-twitter"><i class="fa fa-twitter"></i></a>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="col-md-12 control">
+                                                <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                                                    Don't have an account!
+                                                    <a href="/user/new">
+                                                        Sign Up Here
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+                                    </form>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        <!--/.navbar-collapse -->
+    </div>
+</header>

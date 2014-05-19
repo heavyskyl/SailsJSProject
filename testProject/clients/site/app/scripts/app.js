@@ -6,22 +6,27 @@ angular
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'ngSails'
+    'ngSails',
+    'ui.router'
   ])
-    .config(function ($sailsProvider , $routeProvider ) {
+    .config(function ($sailsProvider , $urlRouterProvider, $stateProvider) {
+
         if (window.location.port === '9000') {
             $sailsProvider.url = window.location.origin.replace('9000', '1337');
         }
         
-        $routeProvider
-        .when('/', {
-            templateUrl: 'views/main.html',
-            controller: 'MainCtrl'
+        $urlRouterProvider.otherwise('index');
+
+        $stateProvider
+            .state('main', {
+                url: "/",
+                templateUrl: "views/main.html",
+                controller: 'MainCtrl'
             })
-        .otherwise({
-            redirectTo: '/'
-        });
-        
+            .state('main.index', {
+                url: "index",
+                templateUrl : "views/main.index.html"
+            });
 
     }).run(function($sails) {
 
