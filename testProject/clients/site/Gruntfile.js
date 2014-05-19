@@ -1,4 +1,4 @@
-// Generated on 2014-05-18 using generator-angular 0.8.0
+// Generated on 2014-05-18 using generator-heavy-sails-angular 0.8.5
 'use strict';
 
 // # Globbing
@@ -534,7 +534,7 @@ module.exports = function (grunt) {
         'copy:assets',
         'fix-path',
         'symlink'
-    ]);
+    ]);                                                                1
 
   grunt.registerTask('build', [
         'clean:dist',

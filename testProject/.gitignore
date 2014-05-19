@@ -5,3 +5,5 @@ assets/site
 node_modules
 .tmp
 .idea
+*.iml
+*.log
