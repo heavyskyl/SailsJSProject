@@ -19,16 +19,24 @@ angular
 
         $stateProvider
             .state('main', {
-                url: "/",
-                templateUrl: "views/main.html",
-                controller: 'MainCtrl'
+                url: '/',
+                templateUrl: 'views/main.html',
+                controller: 'MainCtrl',
+                resolve: {
+                    session : 'Session'
+                }
             })
             .state('main.index', {
-                url: "index",
+                url: 'index',
                 templateUrl : "views/main.index.html"
+            })
+            .state('main.signup', {
+                url: 'signup',
+                templateUrl : 'views/main.signup.html',
+                controller: 'SignUpCtrl'
             });
 
-    }).run(function($sails) {
+    }).run(function($sails, $http) {
 
         $sails.on('message', function (message) {
             console.info('message', message);
@@ -38,6 +46,10 @@ angular
             console.log('success', data);
         }).error(function(data){
             console.log('error', data);
+        });
+
+        $sails.get('/csrfToken', function(data) {
+            console.log("csrf", data);
         });
 
     });

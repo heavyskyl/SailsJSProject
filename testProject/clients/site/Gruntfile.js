@@ -524,6 +524,16 @@ module.exports = function (grunt) {
             }
             grunt.file.write(abspath, content);
         });
+      //@TODO - move to generator
+      //fix views url in all views files
+      grunt.file.recurse(grunt.config.data.yeoman.assets + '/views', function (abspath) {
+          var content = grunt.file.read(abspath);
+          for (var i = 0; i < viewsArr.length; i++) {
+              var view = viewsArr[i];
+              content = content.replace(new RegExp(view, 'g'), '/' + appName + '/' + view);
+          }
+          grunt.file.write(abspath, content);
+      });
     });
 
  grunt.registerTask('build-dev', [

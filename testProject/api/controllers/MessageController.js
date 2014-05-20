@@ -22,6 +22,7 @@ module.exports = {
     * Action blueprints:
     *    `/chat/subscribe`
     */
+
     subscribe: function (req, res) {
         Message.find(function(err, messages) {
             if (err) {

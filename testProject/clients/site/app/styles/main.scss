@@ -2,3 +2,19 @@ body {
   padding-top: 70px;
   padding-bot: 30px;
 }
+
+.site-avatar-small {
+  width : 40px;
+  height : 40px;
+}
+
+.site-nav-avatar {
+  position: absolute;
+  right: 5px;
+  top: 6px;
+  cursor: pointer;
+}
+.site-avatar-medium {
+  width: 60px;
+  height: 60px;
+}
