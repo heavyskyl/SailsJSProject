@@ -544,7 +544,7 @@ module.exports = function (grunt) {
         'copy:assets',
         'fix-path',
         'symlink'
-    ]);                                                                1
+    ]);
 
   grunt.registerTask('build', [
         'clean:dist',

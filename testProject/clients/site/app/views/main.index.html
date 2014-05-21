@@ -1,1 +1,6 @@
 <h1>main.index</h1>
+<div ng-repeat="m in messages">
+    <span>{{m.text}}</span>
+</div>
+<input type="text" ng-model="message" placeholder="Input .." />
+<button class="btn btn-success" ng-click="sendMessage()">Send</button>

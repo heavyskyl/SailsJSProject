@@ -14,7 +14,7 @@ angular
         if (window.location.port === '9000') {
             $sailsProvider.url = window.location.origin.replace('9000', '1337');
         }
-        
+
         $urlRouterProvider.otherwise('index');
 
         $stateProvider
@@ -23,12 +23,14 @@ angular
                 templateUrl: 'views/main.html',
                 controller: 'MainCtrl',
                 resolve: {
-                    session : 'Session'
+                    session : 'Session',
+                    csrf : 'Csrf'
                 }
             })
             .state('main.index', {
                 url: 'index',
-                templateUrl : "views/main.index.html"
+                templateUrl : "views/main.index.html",
+                controller: 'IndexCtrl'
             })
             .state('main.signup', {
                 url: 'signup',
@@ -36,20 +38,6 @@ angular
                 controller: 'SignUpCtrl'
             });
 
-    }).run(function($sails, $http) {
-
-        $sails.on('message', function (message) {
-            console.info('message', message);
-        });
-
-        $sails.get('/message/subscribe').success(function(data) {
-            console.log('success', data);
-        }).error(function(data){
-            console.log('error', data);
-        });
-
-        $sails.get('/csrfToken', function(data) {
-            console.log("csrf", data);
-        });
+    }).run(function() {
 
     });
