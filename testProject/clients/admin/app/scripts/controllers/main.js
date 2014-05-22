@@ -1,10 +1,17 @@
 'use strict';
 
 angular.module('adminApp')
-  .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+    .controller('MainCtrl', function ($scope, $state, session, csrf) {
+
+        $scope.user = session.user;
+        console.log('user', $scope.user);
+
+        $state.go('main.dashboard');
+
+        $scope.csrf = csrf._csrf;
+
+        $scope.isAuthenticated = function() {
+            return $scope.user ? true : false;
+        };
+
+    });

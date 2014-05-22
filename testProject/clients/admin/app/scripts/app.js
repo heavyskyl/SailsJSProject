@@ -1,38 +1,42 @@
 'use strict';
 
 angular
-  .module('adminApp', [
-    'ngCookies',
-    'ngResource',
-    'ngSanitize',
-    'ngRoute',
-    'ngSails'
-  ])
-    .config(function ($sailsProvider , $routeProvider ) {
+    .module('adminApp', [
+        'ngCookies',
+        'ngResource',
+        'ngSanitize',
+        'ngRoute',
+        'ngSails',
+        'ui.router'
+    ])
+    .config(function ($sailsProvider , $urlRouterProvider, $stateProvider) {
         if (window.location.port === '9000') {
             $sailsProvider.url = window.location.origin.replace('9000', '1337');
         }
-        
-        $routeProvider
-        .when('/', {
-            templateUrl: 'views/main.html',
-            controller: 'MainCtrl'
+
+        $urlRouterProvider.otherwise('dashboard');
+
+        $stateProvider
+            .state('main', {
+                url: '/',
+                templateUrl: 'views/main.html',
+                controller: 'MainCtrl',
+                resolve: {
+                    session : 'Session',
+                    csrf : 'Csrf'
+                }
             })
-        .otherwise({
-            redirectTo: '/'
-        });
-        
+            .state('main.dashboard', {
+                url: 'dashboard',
+                templateUrl : "views/main.dashboard.html",
+                controller: 'DashboardCtrl'
+            })
+            .state('main.users', {
+                url: 'users',
+                templateUrl : "views/main.users.html",
+                controller: 'UsersCtrl'
+            });
 
-    }).run(function($sails) {
-
-        $sails.on('message', function (message) {
-            console.info('message', message);
-        });
-
-        $sails.get('/message/subscribe').success(function(data) {
-            console.log('success', data);
-        }).error(function(data){
-            console.log('error', data);
-        });
+    }).run(function() {
 
     });
