@@ -1,1 +1,35 @@
-<p>This is the main.users view.</p>
+<table ng-table="tableParams" show-filter="true" class="table">
+    <tr ng-repeat="user in $data">
+        <td data-title="'Display name'" filter="{ 'displayName': 'text' }">
+            <img class="img-circle site-avatar-small" src="{{user.avatarUrl}}" />
+            {{user.displayName}}
+        </td>
+        <td data-title="'Name'">
+            {{user.firstName}} {{user.lastName}}
+        </td>
+        <td data-title="'Email'">
+            {{user.email}}
+        </td>
+        <td data-title="'Role'">
+            {{user.role}}
+        </td>
+        <td data-title="'Social'">
+            <a href="{{user.socialUrl}}" target="_blank" class="btn btn-social-icon btn-{{user.provider}}">
+                <i class="fa fa-{{user.provider}}"></i>
+            </a>
+        </td>
+        <td data-title="'Actions'">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="/user/profile/<%- user.id %>">Show</a></li>
+                    <li><a href="/user/edit/<%- user.id %>">Edit</a></li>
+                    <li><a href="#">Ban</a></li>
+                    <li class="delegate-assigne-role" data-user-id="<%- user.id %>" ><a href="#">Assigne Role</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Delete</a></li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+</table>

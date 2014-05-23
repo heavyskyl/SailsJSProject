@@ -8,10 +8,6 @@ angular.module('siteApp')
         $scope.message = '';
 
         $scope.sendMessage = function() {
-            /*$sails.post('message', { text : $scope.message }).success(function(data) {
-                console.log('post message', data);
-                //$sails.messages.push(data);
-            });*/
             $sails.post('/message', {
                 text : $scope.message,
                 _csrf : csrf._csrf

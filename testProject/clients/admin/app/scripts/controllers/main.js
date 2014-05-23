@@ -4,7 +4,6 @@ angular.module('adminApp')
     .controller('MainCtrl', function ($scope, $state, session, csrf) {
 
         $scope.user = session.user;
-        console.log('user', $scope.user);
 
         $state.go('main.dashboard');
 

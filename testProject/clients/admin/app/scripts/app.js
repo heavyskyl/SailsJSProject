@@ -7,7 +7,8 @@ angular
         'ngSanitize',
         'ngRoute',
         'ngSails',
-        'ui.router'
+        'ui.router',
+        'ngTable'
     ])
     .config(function ($sailsProvider , $urlRouterProvider, $stateProvider) {
         if (window.location.port === '9000') {
@@ -34,7 +35,10 @@ angular
             .state('main.users', {
                 url: 'users',
                 templateUrl : "views/main.users.html",
-                controller: 'UsersCtrl'
+                controller: 'UsersCtrl',
+                resolve: {
+                    users : 'Users'
+                }
             });
 
     }).run(function() {
