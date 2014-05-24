@@ -3,7 +3,7 @@
 angular.module('adminApp')
     .controller('UsersCtrl', function ($scope, users, $filter, ngTableParams, userRoles, $modal, $sails, $http, csrf,
         $log) {
-        window.$scope = $scope;
+
         $scope.showRoleModal = function(user) {
             var scope = $scope.$new(true),
                 modal;
