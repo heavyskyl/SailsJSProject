@@ -11,7 +11,7 @@
             {{user.email}}
         </td>
         <td data-title="'Role'">
-            {{user.role}}
+            {{userRoles.getRole(user.role)}}
         </td>
         <td data-title="'Social'">
             <a href="{{user.socialUrl}}" target="_blank" class="btn btn-social-icon btn-{{user.provider}}">
@@ -20,12 +20,16 @@
         </td>
         <td data-title="'Actions'">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    Actions <span class="caret"></span>
+                </button>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="/user/profile/<%- user.id %>">Show</a></li>
                     <li><a href="/user/edit/<%- user.id %>">Edit</a></li>
                     <li><a href="#">Ban</a></li>
-                    <li class="delegate-assigne-role" data-user-id="<%- user.id %>" ><a href="#">Assigne Role</a></li>
+                    <li ng-click="showRoleModal(user)">
+                        <a>Assign role</a>
+                    </li>
                     <li class="divider"></li>
                     <li><a href="#">Delete</a></li>
                 </ul>
@@ -33,3 +37,14 @@
         </td>
     </tr>
 </table>
+
+<script type="text/ng-template" id="main.users.role.modal.html">
+    <button type="button" class="btn btn-default" ng-model="user.role"
+            ng-options="role.role as role.title for role in userRoles.getRoles()" bs-select>
+        Action <span class="caret"></span>
+    </button>
+    <div class="pull-right">
+        <button class="btn btn-primary" ng-click="save()">Save</button>
+        <a class="site-a-btn text-info" ng-click="hide()">Cancel</a>
+    </div>
+</script>

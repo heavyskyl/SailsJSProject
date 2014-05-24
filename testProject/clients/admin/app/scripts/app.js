@@ -8,6 +8,7 @@ angular
         'ngRoute',
         'ngSails',
         'ui.router',
+        'mgcrea.ngStrap',
         'ngTable'
     ])
     .config(function ($sailsProvider , $urlRouterProvider, $stateProvider) {

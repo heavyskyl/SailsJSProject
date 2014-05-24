@@ -129,31 +129,6 @@ module.exports = {
         });
     },
 
-    'edit' : function(req, res, next) {
-        User.findOne(req.params.id, function(err, user) {
-            if (err) return next(err);
-            if (!user) return next();
-
-            res.view({
-                user : user
-            });
-        });
-    },
-
-    'update' : function(req, res, param) {
-        User.update(req.params.id, req.params.all(), function(err) {
-            if (err) {
-                req.session.flash = {
-                    err : err
-                };
-
-                return res.redirect('user/edit/' + req.params.id);
-            } else {
-                return res.redirect('user/profile/' + req.params.id);
-            }
-        });
-    },
-
     /**
      * Overrides for the settings in `config/controllers.js`
      * (specific to UserController)
