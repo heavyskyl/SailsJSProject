@@ -36,6 +36,15 @@ div.modal {
   overflow: hidden;
 }
 
+.site-user-avatar {
+  overflow: hidden;
+  margin-right: 4px;
+}
+
+.site-user-date {
+  font-style: italic;
+}
+
 .modal-backdrop.am-fade {
   opacity: .5;
   transition: opacity .15s linear;
