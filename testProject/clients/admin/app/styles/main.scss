@@ -28,6 +28,10 @@ body {
   cursor: pointer;
 }
 
+.dropdown-menu > li {
+  cursor: pointer;
+}
+
 .modal-backdrop.am-fade {
   opacity: .5;
   transition: opacity .15s linear;
