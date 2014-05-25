@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('siteApp')
-  .controller('MainCtrl', function ($scope, $state, session, csrf) {
-
-     $scope.user = session.user;
-     console.log('user', $scope.user);
+  .controller('MainCtrl', function ($scope, $state, user, csrf) {
+     window.$scope = $scope;
+     user.subscribe($scope);
 
      $state.go('main.index');
 

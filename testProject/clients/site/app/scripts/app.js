@@ -7,7 +7,9 @@ angular
     'ngSanitize',
     'ngRoute',
     'ngSails',
-    'ui.router'
+    'ui.router',
+    'mgcrea.ngStrap',
+    'ngAnimate'
   ])
     .config(function ($sailsProvider , $urlRouterProvider, $stateProvider) {
 

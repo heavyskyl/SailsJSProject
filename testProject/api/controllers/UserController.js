@@ -37,55 +37,6 @@ function getRole(role) {
 
 module.exports = {
 
-    'setRole' : function(req, res, next) {
-        var params = req.params.all();
-
-        User.update({
-            id : params.userId
-        },{
-            role : parseInt(params.role, 10)
-        }, function(err, users) {
-            var user;
-
-            if (err) {
-                return res.json({
-                    error : true,
-                    errorInstance : err
-                })
-            } else {
-                user = users[0];
-
-                user.role = getRole(user.role);
-
-                res.json({
-                    error : false,
-                    success : true,
-                    user : user
-                });
-            }
-        });
-
-
-    },
-
-    'roleDialogTpl' : function(req, res, next) {
-        User.findOne({ _id : req.params.id}, function(err, user) {
-            if (err) return next(err);
-            if (!user) return next();
-
-            res.view({
-                user : user,
-                roles : {
-                    'user' : 100,
-                    'moderator' : 200,
-                    'admin' : 300,
-                    'super-admin' : 400
-                },
-                layout: null
-            });
-        });
-    },
-
     'new' : function (req, res) {
         res.view();
     },
@@ -93,38 +44,24 @@ module.exports = {
     'create' : function(req, res, next) {
         User.create(req.params.all(), function(err, user) {
             if (err) {
-
-                req.session.flash = {
-                    err : err
-                }
-
-                return res.redirect("/user/new");
+                return res.json({
+                    error : true,
+                    errors : err
+                });
             }
-
-            res.json(user);
-            req.session.flash = {};
 
             req.logIn(user, function (err) {
                 if (err) {
-                    res.view('500', err);
-                    return;
+                    return res.json({
+                        error : true,
+                        errors : err
+                    });
                 }
 
-                res.redirect("/user/profile/" + user.id);
-                return;
-            });
-
-            //return res.redirect("/user/profile/" + user.id);
-        });
-    },
-
-    'profile' : function(req, res, next) {
-        User.findOne({ _id : req.params.id}, function(err, user) {
-            if (err) return next(err);
-            if (!user) return next();
-
-            res.view({
-                user : user
+                return res.json({
+                    error : false,
+                    user : user
+                });
             });
         });
     },
