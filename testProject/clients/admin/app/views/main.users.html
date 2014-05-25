@@ -39,8 +39,9 @@
 </table>
 
 <script type="text/ng-template" id="main.users.role.modal.html">
-    <button type="button" class="btn btn-default" ng-model="user.role"
-            ng-options="role.role as role.title for role in userRoles.getRoles()" bs-select>
+    <button type="button" class="btn btn-default" ng-model="user.role" data-animation="am-flip-x"
+            ng-options="role.role as role.title for role in userRoles.getRoles()"
+            bs-select>
         Action <span class="caret"></span>
     </button>
     <div class="pull-right">

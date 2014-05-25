@@ -23,7 +23,6 @@ angular.module('adminApp')
             modal = $modal({
                 title: 'Assign role',
                 contentTemplate: 'main.users.role.modal.html',
-                animation: 'am-fade-and-scale',
                 placement: 'center',
                 scope: scope,
                 show: true
