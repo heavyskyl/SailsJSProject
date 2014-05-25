@@ -49,9 +49,7 @@ module.exports = {
                         res.view('500');
                         return;
                     }
-                    return res.json({
-                        user : user
-                    })
+
                     res.redirect('/');
                     return;
                 });
