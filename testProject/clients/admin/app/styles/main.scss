@@ -32,6 +32,10 @@ body {
   cursor: pointer;
 }
 
+div.modal {
+  overflow: hidden;
+}
+
 .modal-backdrop.am-fade {
   opacity: .5;
   transition: opacity .15s linear;

@@ -9,6 +9,7 @@ angular
         'ngSails',
         'ui.router',
         'mgcrea.ngStrap',
+        'ngAnimate',
         'ngTable'
     ])
     .config(function ($sailsProvider , $urlRouterProvider, $stateProvider) {
