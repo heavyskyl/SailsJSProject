@@ -1,60 +1,128 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-            <form role="form">
+            <form role="form" name="form" class="site-sigh-in-form">
                 <h2>Please Sign Up <small>It's free and always will be.</small></h2>
                 <hr class="colorgraph">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6">
-                        <div class="form-group">
+                        <div class="form-group" ng-class="{ 'has-error' : hasError('firstName')}">
                             <input type="text"
                                    class="form-control input-lg"
+                                   name="firstName"
                                    placeholder="First Name"
                                    tabindex="1"
+                                   ng-focus="setFieldEdited('firstName')"
+                                   required
                                    ng-model="user.firstName" />
+                            <span ng-show="showError('firstName')" class="control-label">
+                                First name is required
+                            </span>
+                            <span ng-show="showBeforeValidationError('firstName')" class="control-label">
+                                {{ getBeforeValidationError('firstName') }}
+                            </span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6">
-                        <div class="form-group">
+                        <div class="form-group" ng-class="{ 'has-error' :  hasError('lastName') }">
                             <input type="text"
                                    class="form-control input-lg"
+                                   name="lastName"
                                    placeholder="Last Name"
                                    tabindex="2"
+                                   ng-focus="setFieldEdited('lastName')"
+                                   required
                                    ng-model="user.lastName" />
+                            <span ng-show="showError('lastName')" class="control-label">
+                                Last name is required
+                            </span>
+                            <span ng-show="showBeforeValidationError('lastName')" class="control-label">
+                                {{ getBeforeValidationError('lastName') }}
+                            </span>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-class="{ 'has-error' : hasError('displayName') }">
                     <input type="text"
                            class="form-control input-lg"
+                           name="displayName"
                            placeholder="Display Name"
                            tabindex="3"
+                           ng-focus="setFieldEdited('displayName')"
+                           required
+                           ng-minlength="5"
                            ng-model="user.displayName">
+                    <span ng-show="showError('displayName')" class="control-label">
+                          Display name is required
+                    </span>
+                    <span ng-show="showError('displayName', 'minlength')" class="control-label">
+                          Display name should be at least 5 characters
+                    </span>
+                    <span ng-show="showBeforeValidationError('displayName')" class="control-label">
+                        {{ getBeforeValidationError('displayName') }}
+                    </span>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-class="{ 'has-error' : hasError('email') }">
                     <input type="email"
                            class="form-control input-lg"
+                           name="email"
                            placeholder="Email Address"
                            tabindex="4"
+                           ng-focus="setFieldEdited('email')"
+                           required
                            ng-model="user.email">
+                    <span ng-show="showError('email')" class="control-label">
+                          Email is required
+                    </span>
+                    <span ng-show="showError('email', 'email')" class="control-label">
+                          Email is not valid
+                    </span>
+                    <span ng-show="showBeforeValidationError('email')" class="control-label">
+                        {{ getBeforeValidationError('email') }}
+                    </span>
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6">
-                        <div class="form-group">
+                        <div class="form-group" ng-class="{ 'has-error' : hasError('password') }">
                             <input type="password"
                                    class="form-control input-lg"
+                                   name="password"
                                    placeholder="Password"
                                    tabindex="5"
+                                   ng-focus="setFieldEdited('password')"
+                                   required
+                                   ng-minlength="6"
                                    ng-model="user.password">
+                            <span ng-show="showError('password')" class="control-label">
+                                  Password is required
+                            </span>
+                            <span ng-show="showError('password', 'minlength')" class="control-label">
+                                  Password should be at least 6 characters
+                            </span>
+                            <span ng-show="showBeforeValidationError('password')" class="control-label">
+                                 {{ getBeforeValidationError('password') }}
+                            </span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6">
-                        <div class="form-group">
+                        <div class="form-group" ng-class="{ 'has-error' : hasPasswordConfirmationError() }">
                             <input type="password"
                                    class="form-control input-lg"
+                                   name="passwordConfirmation"
                                    placeholder="Confirm Password"
                                    tabindex="6"
+                                   ng-focus="setFieldEdited('passwordConfirmation')"
+                                   required
                                    ng-model="user.passwordConfirmation">
+                            <span ng-show="showError('passwordConfirmation')" class="control-label">
+                                  Password confirmation is required
+                            </span>
+                            <span ng-show="showPasswordsNotEqualError()" class="control-label">
+                                  Passwords are not equal
+                            </span>
+                            <span ng-show="showBeforeValidationError('passwordConfirmation')" class="control-label">
+                                 {{ getBeforeValidationError('passwordConfirmation') }}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -77,7 +145,8 @@
                 <hr class="colorgraph">
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
-                        <button ng-click="register()" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                        <button ng-click="register()" class="btn btn-primary btn-block btn-lg" tabindex="7"
+                            ng-disabled="!form.$valid">
                             Register
                         </button>
                     </div>

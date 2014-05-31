@@ -46,7 +46,7 @@ module.exports = {
             if (err) {
                 return res.json({
                     error : true,
-                    errors : err
+                    errorInstance : err
                 });
             }
 

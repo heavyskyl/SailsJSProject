@@ -9,132 +9,162 @@ var bcrypt = require('bcrypt-nodejs/bCrypt.js');
 
 module.exports = {
 
-    schema : true,
+   schema: true,
 
-    attributes: {
+   attributes: {
 
-        provider : {
-            type : 'string',
-            defaultsTo : 'local'
-        },
+      provider: {
+         type: 'string',
+         defaultsTo: 'local'
+      },
 
-        /*
-            default in beforeCreate = 100
-            100 - user
-            200 - moderator
-            300 - admin
-            400 - superadmin
-        */
-        role : {
-            type : 'integer',
-            defaultsTo : 100,
-            in : [100, 200, 300, 400]
-        },
+      /*
+       default in beforeCreate = 100
+       100 - user
+       200 - moderator
+       300 - admin
+       400 - superadmin
+       */
+      role: {
+         type: 'integer',
+         defaultsTo: 100,
+         in: [100, 200, 300, 400]
+      },
 
-        firstName : {
-            type : 'string',
-            //required : true,
-            columnName: 'first_name'
-        },
+      firstName: {
+         type: 'string',
+         //required : true,
+         columnName: 'first_name'
+      },
 
-        lastName : {
-            type : 'string',
-            //required : true,
-            columnName : 'last_name'
-        },
+      lastName: {
+         type: 'string',
+         //required : true,
+         columnName: 'last_name'
+      },
 
-        displayName : {
-            type : 'string',
-            required : true,
-            columnName : 'display_name',
-            minLength : 5
-        },
+      displayName: {
+         type: 'string',
+         required: true,
+         columnName: 'display_name',
+         minLength: 5
+      },
 
-        encryptedPassword : {
-            type : 'string',
-            columnName : 'encrypted_password'
-        },
+      encryptedPassword: {
+         type: 'string',
+         columnName: 'encrypted_password'
+      },
 
-        email : {
-            type : 'string',
-            email : true,
-            unique : true,
-            defaultsTo : undefined
-            //required : true
-        },
+      email: {
+         type: 'string',
+         email: true,
+         unique: true,
+         defaultsTo: undefined
+         //required : true
+      },
 
-        socialId : {
-            columnName : 'social_id',
-            defaultsTo : undefined
-        },
+      socialId: {
+         columnName: 'social_id',
+         defaultsTo: undefined
+      },
 
-        socialUrl : {
-            columnName : 'social_url',
-            defaultsTo : undefined
-        },
+      socialUrl: {
+         columnName: 'social_url',
+         defaultsTo: undefined
+      },
 
-        avatarUrl : {
-            columnName : 'avatar_url',
-            defaultsTo : 'http://rocketdock.com/images/screenshots/League-of-Legends-Ashe.png'
-        },
+      avatarUrl: {
+         columnName: 'avatar_url',
+         defaultsTo: 'http://rocketdock.com/images/screenshots/League-of-Legends-Ashe.png'
+      },
 
-        toJSON : function() {
-            var object = this.toObject();
+      toJSON: function () {
+         var object = this.toObject();
 
-            delete object.encryptedPassword;
+         delete object.encryptedPassword;
 
-            return object;
-        }
+         return object;
+      }
 
-    },
+   },
 
-    beforeCreate: function (attrs, next) {
-        console.log('before create user');
-        attrs.role = 100;
-        if (attrs.provider === 'local') {
-            if (!attrs.firstName) {
-                return next({
-                    err : 'First name is not specified'
-                });
+   beforeValidation: function (attrs, next) {
+      var errors = {};
+
+      function goNext() {
+         if (Object.getOwnPropertyNames(errors).length > 0) {
+            next({
+               BeforeValidationError : errors
+            })
+         } else {
+            next();
+         }
+      }
+
+      attrs.role = 100;
+      if (attrs.provider === 'local') {
+         if (!attrs.firstName) {
+            errors.firstName = ['First name is required'];
+         }
+
+         if (!attrs.lastName) {
+            errors.lastName = ['Last name is required'];
+         }
+
+         if (!attrs.displayName) {
+            errors.displayName = ['Display name should be at least 5 characters'];
+         }
+
+         if (attrs.password) {
+            if (attrs.password.length < 6) {
+               errors.password = ['Password should be at least 6 characters'];
             }
 
-            if (!attrs.lastName) {
-                return next({
-                    err : 'Last name is not specified'
-                });
+            if (attrs.password !== attrs.passwordConfirmation) {
+               errors.passwordConfirmation = ['Passwords are not equal'];
             }
+         } else {
+            errors.password = ['Password should be at least 6 characters'];
+         }
 
-            if (!attrs.displayName) {
-                return next({
-                    err : 'Display name is not specified'
-                });
-            }
+         if (!attrs.email) {
+            errors.email = ['Email is not valid'];
+         }
 
-            if (!attrs.email) {
-                return next({
-                    err : 'Email is not specified'
-                });
-            }
+         attrs.encryptedPassword = bcrypt.hashSync(attrs.password);
 
-            if (attrs.password) {
-                if (attrs.password.length < 6) {
-                    return next({
-                        err : 'Password length should be at least 8 characters'
-                    });
-                }
+         /**
+          * check is email exist and is displayName exist;
+          */
+         if (attrs.email && attrs.displayName) {
+            User.findOne({
+               where : {
+                  or : [
+                     { email : attrs.email },
+                     { displayName : attrs.displayName, provider : 'local' }
+                  ]
+               }
+            }).done(function (err, user) {
+               if (user) {
 
-                if (attrs.password !== attrs.passwordConfirmation) {
-                    return next({
-                        err : 'Passwords are not equal'
-                    });
-                }
-            }
+                  if (user.email === attrs.email) {
+                     errors.email = ['Email "' + attrs.email + '" is already in use'];
+                  }
 
-            attrs.encryptedPassword = bcrypt.hashSync(attrs.password);
-        }
+                  if (user.displayName === attrs.displayName) {
+                     errors.displayName = ['Display name "' + attrs.displayName + '" is already in use'];
+                  }
 
-        next();
+               }
 
-    }
+               goNext();
+            });
+         } else {
+            goNext();
+         }
+
+      }
+
+   }
 
 };

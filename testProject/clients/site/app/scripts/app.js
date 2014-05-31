@@ -8,7 +8,8 @@ angular.module('siteApp', [
       'ngSails',
       'ui.router',
       'mgcrea.ngStrap',
-      'ngAnimate'
+      'ngAnimate',
+      'jlareau.pnotify'
    ])
    .config(function ($sailsProvider, $urlRouterProvider, $stateProvider) {
 
