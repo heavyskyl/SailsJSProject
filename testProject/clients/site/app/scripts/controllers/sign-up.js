@@ -25,6 +25,7 @@ angular.module('siteApp')
             if (data.error !== true) {
                $scope.user = {};
                user.login(data.user);
+               notificationService.success('Welcome ' + data.user.firstName + '<br /><a>Take a toor</a>');
                $state.go('main.index');
             } else {
 
