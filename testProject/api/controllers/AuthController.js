@@ -26,6 +26,11 @@ module.exports = {
         });
     },
 
+   'logoutHttp' : function(req, res) {
+      req.logout();
+      res.redirect('/');
+   },
+
     'local' : function(req, res) {
         passport.authenticate('local', { failureRedirect: '/' },
             function (err, user) {
