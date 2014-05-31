@@ -5,8 +5,6 @@ angular.module('siteApp')
 
       user.subscribe($scope);
 
-      $state.go('main.index');
-
       $scope.csrf = csrf._csrf;
 
       $scope.isAuthenticated = function () {
