@@ -11,8 +11,4 @@ describe('Service: Session', function () {
     Session = _Session_;
   }));
 
-  it('should do something', function () {
-    expect(!!Session).toBe(true);
-  });
-
 });

@@ -20,6 +20,7 @@ module.exports = function(config) {
       'app/bower_components/socket.io-client/dist/socket.io.min.js',
       'app/bower_components/bower-sails.io/sails.io.js',
       'app/bower_components/angular-sails/dist/angular-sails.js',
+      'app/bower_components/angular-ui-router/release/angular-ui-router.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',

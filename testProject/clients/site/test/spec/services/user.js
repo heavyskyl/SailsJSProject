@@ -11,8 +11,4 @@ describe('Service: user', function () {
     user = _user_;
   }));
 
-  it('should do something', function () {
-    expect(!!user).toBe(true);
-  });
-
 });

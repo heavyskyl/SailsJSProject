@@ -11,8 +11,4 @@ describe('Service: Csrf', function () {
     Csrf = _Csrf_;
   }));
 
-  it('should do something', function () {
-    expect(!!Csrf).toBe(true);
-  });
-
 });

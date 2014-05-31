@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li ng-show="isAuthenticated()">
-                    <a href="/auth/logout">Log Out</a>
+                    <a ng-click="logout()">Log Out</a>
                 </li>
 
                 <li ng-show="!isAuthenticated()" ui-sref-active="active">
