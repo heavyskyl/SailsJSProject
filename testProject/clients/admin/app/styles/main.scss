@@ -49,6 +49,12 @@ div.modal {
   font-style: italic;
 }
 
+.ng-table-pager {
+  .pagination {
+    margin: 0;
+  }
+}
+
 .modal-backdrop.am-fade {
   opacity: .5;
   transition: opacity .15s linear;
