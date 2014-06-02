@@ -43,11 +43,26 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
                             data.lastname = profile.name.familyName;
                         }
                     }
+                    if (data.email) {
 
-                    User.create(data).done(function (err, user) {
-                        if (err) console.log(err);
-                        return done(err, user);
-                    });
+                       User.findOneByEmail(data.email).done(function(err, user) {
+                          if (err) console.log(err);
+                          if (user) {
+                             data.email = undefined;
+                          }
+                          User.create(data).done(function (err, user) {
+                             if (err) console.log(err);
+                             return done(err, user);
+                          });
+                       });
+
+                    } else {
+                       User.create(data).done(function (err, user) {
+                          if (err) console.log(err);
+                          return done(err, user);
+                       });
+                    }
+
                 }
             });
     });
