@@ -81,6 +81,11 @@ module.exports = {
                         });
                     });
 
+                } else {
+                    return res.json({
+                        error: true,
+                        message: isEmail ? 'Incorrect email or password' : 'Incorrect display name or password'
+                    });
                 }
             });
     },
