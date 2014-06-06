@@ -33,3 +33,10 @@ li.dropdown {
     font-size: 12px;
   }
 }
+
+.sign-in-err {
+  position: absolute;
+  z-index: 9999999;
+  font-size: 12px;
+  margin-top: -22px;
+}
