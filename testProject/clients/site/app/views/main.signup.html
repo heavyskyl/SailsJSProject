@@ -51,12 +51,16 @@
                            ng-focus="setFieldEdited('displayName')"
                            required
                            ng-minlength="5"
-                           ng-model="user.displayName">
+                           ng-model="user.displayName"
+                           ng-pattern="/^[a-zA-Z0-9_]*$/">
                     <span ng-show="showError('displayName')" class="control-label">
                           Display name is required
                     </span>
                     <span ng-show="showError('displayName', 'minlength')" class="control-label">
                           Display name should be at least 5 characters
+                    </span>
+                    <span ng-show="showError('displayName', 'pattern')" class="control-label">
+                          Password should have only letters, numbers and underscores
                     </span>
                     <span ng-show="showBeforeValidationError('displayName')" class="control-label">
                         {{ getBeforeValidationError('displayName') }}

@@ -113,6 +113,10 @@ module.exports = {
 
          if (!attrs.displayName) {
             errors.displayName = ['Display name should be at least 5 characters'];
+         } else {
+            if (!(/^[a-zA-Z0-9_]*$/.test(attrs.displayName))) {
+                errors.displayName = ['Password should have only letters, numbers and underscores'];
+            }
          }
 
          if (attrs.password) {
