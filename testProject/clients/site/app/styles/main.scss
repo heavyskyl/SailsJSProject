@@ -40,3 +40,63 @@ li.dropdown {
   font-size: 12px;
   margin-top: -22px;
 }
+
+avatar-uploader {
+  .site-pick-ava {
+    width: 100%;
+  }
+
+  a {
+    cursor: pointer;
+  }
+
+  .site-uploader-error {
+    position: absolute;
+    margin-top: 8px;
+  }
+
+  .site-uploader-image {
+    max-width: 558px;
+  }
+
+  .site-uploader-profile-image-canvas {
+    height: 200px;
+    width: 200px;
+  }
+
+  .site-upload-btn-wrapper {
+    padding: 30px 0 37px;
+
+    .site-input-fix {
+      position: relative;
+
+      span {
+        margin: 0 auto;
+        display: block;
+        cursor: pointer;
+      }
+
+      input {
+        opacity: 0;
+        width: 100%;
+        height: 37px;
+        margin-top: -34px;
+        cursor: pointer;
+      }
+    }
+
+    .site-drag-n-drop-area {
+      height: 50px;
+      border: 1px dashed;
+      text-align: center;
+      line-height: 45px;
+    }
+  }
+}
+
+.site-sign-up-avatar-preview {
+  position: absolute;
+  margin-top: -7px;
+  border: 1px solid #DCDCDC;
+  margin-left: 103px;
+}

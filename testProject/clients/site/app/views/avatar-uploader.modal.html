@@ -1,0 +1,60 @@
+<div ng-show="!image.display">
+    <p>
+        Please upload a real photo of yourself, so that friends can recognize you.
+        <br />
+        We support JPG, JPEG, GIF or PNG files.
+    </p>
+
+    <span class="text text-danger site-uploader-error" ng-show="error.status">
+        <i class="fa fa-exclamation-triangle"></i>
+        {{error.message}}
+    </span>
+    <div class="site-upload-btn-wrapper">
+        <div class="site-input-fix">
+            <span class="btn btn-primary" onclick="this.nextSibling.click()">
+                Choose File...
+            </span>
+            <input type="file" size="30">
+        </div>
+        <div class="site-drag-n-drop-area">
+            Or drag'n'drop file here
+        </div>
+    </div>
+
+    <p>
+        If you have any problems with your upload, try using a smaller picture.
+        <br />
+        If you have a web-cam, you can
+        <a>take an instant shot</a>
+        <i class="fa fa-video-camera"></i>
+    </p>
+</div>
+<div ng-show="image.display && !thumb.display">
+    <p>
+        Please select an area for your profile picture and miniature.
+    </p>
+    <div>
+        <img ng-src="{{image.data}}" class="site-uploader-image site-uploader-main-image" onimageload data-on-load-callback="onImageEditLoad" />
+    </div>
+
+    <div style="width: 0; height: 0; overflow: hidden;">
+        <img ng-src="{{image.data}}" onimageload data-on-load-callback="onImageLoad" />
+    </div>
+
+    <div class="site-uploader-profile-wrapper" ng-hide="true">
+
+    </div>
+
+    <hr />
+    <button class="btn btn-primary" ng-click="next()">Next</button>
+    <a ng-click="cancel()">Cancel</a>
+</div>
+<div ng-show="image.display && thumb.display">
+    <p>
+        Now select a square area for your profile miniature.<br />
+        The miniature will appear next to your posts, private messages and comments.
+    </p>
+    <div style="width: 200px; height: 200px; overflow: hidden;">
+        <img ng-src="{{thumb.data}}" class="site-uploader-image"/>
+    </div>
+</div>
