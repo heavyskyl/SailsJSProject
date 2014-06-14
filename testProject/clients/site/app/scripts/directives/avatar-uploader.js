@@ -35,17 +35,6 @@ angular.module('siteApp')
                     };
                 };
 
-                $scope.setCoordinates = function(c) {
-                    $scope.coordinates = {
-                        w : c.w >= 200 ? c.w : 200,
-                        h : c.h >= 200 ? c.h : 200,
-                        x : c.x,
-                        y : c.y,
-                        x2 : c.x2,
-                        y2 : c.y2
-                    };
-                };
-
                 $scope.coordinates = {
                     w : 0,
                     h : 0,
@@ -140,13 +129,12 @@ angular.module('siteApp')
                                 scope.$apply();
 
                                 element.find('.site-uploader-image.site-uploader-main-image').Jcrop({
-                                    onChange: function(c) {
-                                        element.find('.jcrop-holder > div').css({
-                                            minWidth : '200px',
-                                            minHeight : '200px'
-                                        });
 
-                                        scope.setCoordinates(c);
+                                    minSize : [200, 200],
+
+                                    onChange: function(c) {
+
+                                        scope.coordinates = c;
 
                                         var canvas = document.createElement('canvas');
                                         element.find('.site-uploader-profile-wrapper').html('').append(canvas);
