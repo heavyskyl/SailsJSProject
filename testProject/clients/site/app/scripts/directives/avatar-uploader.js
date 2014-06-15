@@ -15,6 +15,8 @@ angular.module('siteApp')
                     message : ''
                 };
 
+                $scope.el = null;
+
                 $scope.supportedFileTypes = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 
                 $scope.isSupportedType = function(type) {
@@ -28,11 +30,8 @@ angular.module('siteApp')
                     data: ''
                 };
 
-                $scope.cancel = function() {
-                    $scope.image = {
-                        display: false,
-                        data: ''
-                    };
+                $scope.back = function() {
+                    $scope.reload();
                 };
 
                 $scope.coordinates = {
@@ -87,6 +86,8 @@ angular.module('siteApp')
 
                 $scope.next = function() {
 
+                    $scope.onChange($scope.coordinates);
+
                     $scope.thumb = {
                         display : true,
                         data : $scope.canvas.toDataURL()
@@ -95,8 +96,63 @@ angular.module('siteApp')
 
                 $scope.canvas = null;
 
+                $scope.onChange = function(c) {
+
+                    $scope.coordinates = c;
+
+                    var canvas = document.createElement('canvas');
+                    $scope.el.find('.site-uploader-profile-wrapper').html('').append(canvas);
+                    canvas.width = 200;
+                    canvas.height = 200;
+
+                    var context = canvas.getContext('2d');
+                    var image = new Image();
+                    image.src = $scope.image.data;
+
+                    var m = $scope.imageSize.width / $scope.imageEditSize.width;
+
+                    context.drawImage(image,
+                        $scope.coordinates.x * m,
+                        $scope.coordinates.y * m,
+                        $scope.coordinates.w * m,
+                        $scope.coordinates.h * m,
+                        0,
+                        0,
+                        200,
+                        200
+                    );
+
+                    $scope.canvas = canvas;
+                };
+
+                $scope.reload = function() {
+                    $scope.error = {
+                        status : false,
+                        message : ''
+                    };
+                    $scope.image = {
+                        display: false,
+                        data: ''
+                    };
+                    $scope.thumb = {
+                        display : false,
+                        data : ''
+                    };
+                    if ($scope.mainJcrop) {
+                        $scope.mainJcrop.destroy();
+                    }
+                };
+
+                $scope.mainJcrop = null;
+
             },
             link: function postLink(scope, element, attrs) {
+                scope.el = element;
+
+                scope.$on('modal.hide', function(e) {
+                    scope.reload();
+                });
+
                 element.delegate('input', 'change', function() {
                     var file = this.files[0],
                         reader;
@@ -105,13 +161,11 @@ angular.module('siteApp')
 
                     $(this).val('');
 
-                    console.log(file, scope.maxSize);
-
                     if (file.size > parseInt(scope.maxSize, 10)) {
                         scope.error = {
                             status : true,
                             message : 'File "' + file.name + '" is too big'
-                        }
+                        };
                     } else {
                         if (scope.isSupportedType(file.type)) {
                             scope.error = {
@@ -129,43 +183,15 @@ angular.module('siteApp')
                                 scope.$apply();
 
                                 element.find('.site-uploader-image.site-uploader-main-image').Jcrop({
-
                                     minSize : [200, 200],
-
-                                    onChange: function(c) {
-
-                                        scope.coordinates = c;
-
-                                        var canvas = document.createElement('canvas');
-                                        element.find('.site-uploader-profile-wrapper').html('').append(canvas);
-                                        canvas.width = 200;
-                                        canvas.height = 200;
-
-                                        var context = canvas.getContext('2d');
-                                        //context.drawImage(image, x * widthOfOnePiece, y * heightOfOnePiece, widthOfOnePiece, heightOfOnePiece, 0, 0, canvas.width, canvas.height);
-                                        var image = new Image();
-                                        image.src = $scope.image.data;
-
-                                        var m = scope.imageSize.width / scope.imageEditSize.width;
-
-                                        context.drawImage(image,
-                                            scope.coordinates.x * m,
-                                            scope.coordinates.y * m,
-                                            scope.coordinates.w * m,
-                                            scope.coordinates.h * m,
-                                            0,
-                                            0,
-                                            200,
-                                            200
-                                        );
-
-                                        $scope.canvas = canvas;
-
-                                        scope.$apply();
-                                    },
-                                    //onSelect: showPreview,
+                                    setSelect : [0, 0, 200, 200], //@TODO middle coordinates
+                                    onChange: $scope.onChange,
+                                    onSelect: $scope.onChange,
                                     aspectRatio: 1
+                                }, function() {
+                                    scope.mainJcrop = this;
                                 });
+
                             };
 
                             reader.readAsDataURL(file);

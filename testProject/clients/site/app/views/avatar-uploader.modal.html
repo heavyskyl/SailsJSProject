@@ -41,13 +41,11 @@
         <img ng-src="{{image.data}}" onimageload data-on-load-callback="onImageLoad" />
     </div>
 
-    <div class="site-uploader-profile-wrapper" ng-hide="true">
-
-    </div>
+    <div class="site-uploader-profile-wrapper" ng-hide="true"></div>
 
     <hr />
     <button class="btn btn-primary" ng-click="next()">Next</button>
-    <a ng-click="cancel()">Cancel</a>
+    <a ng-click="back()">Back</a>
 </div>
 <div ng-show="image.display && thumb.display">
     <p>
