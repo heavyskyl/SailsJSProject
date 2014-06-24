@@ -43,6 +43,15 @@ angular.module('siteApp')
                     y2 : 0
                 };
 
+                $scope.profileCoordinates = {
+                    w : 0,
+                    h : 0,
+                    x : 0,
+                    y : 0,
+                    x2 : 0,
+                    y2 : 0
+                };
+
                 $scope.onImageLoad = function(e, el) {
                     $scope.imageSize = {
                         width : el.width(),
@@ -67,6 +76,30 @@ angular.module('siteApp')
                     height : 0
                 };
 
+                $scope.drop = function(e) {
+                    var dt = e.originalEvent.dataTransfer,
+                        files = dt.files,
+                        file = files[0];
+
+                    $scope.handleFile(file);
+                    $scope.dragIn.status = false;
+                    $scope.$apply();
+                };
+
+                $scope.dragenter = function(e) {
+                    $scope.dragIn.status = true;
+                    $scope.$apply();
+                };
+
+                $scope.dragleave = function(e) {
+                    $scope.dragIn.status = false;
+                    $scope.$apply();
+                };
+
+                $scope.dragIn = {
+                    status : false
+                };
+
                 $scope.getPreviewStyle = function() {
                     var rx = 200 / $scope.coordinates.w,
                         ry = 200 / $scope.coordinates.h;
@@ -84,7 +117,21 @@ angular.module('siteApp')
                     data : ''
                 };
 
+                $scope.canNext = function() {
+                    var c = $scope.coordinates;
+
+                    return ((c.x !== c.x2) && (c.y !== c.y2));
+                };
+
+                $scope.canSave = function() {
+                    var c = $scope.profileCoordinates;
+
+                    return ((c.x !== c.x2) && (c.y !== c.y2));
+                };
+
                 $scope.next = function() {
+
+                    $scope.el.find('.site-uploader-profile-image').attr('src', '');
 
                     $scope.onChange($scope.coordinates);
 
@@ -92,6 +139,52 @@ angular.module('siteApp')
                         display : true,
                         data : $scope.canvas.toDataURL()
                     };
+                };
+
+                $scope.profileJcrop = null;
+
+                $scope.onChangeProfileImage = function(c) {
+
+                    $scope.profileCoordinates = c;
+
+                    var canvas = document.createElement('canvas');
+                    $scope.el.find('.site-uploader-profile-thumb-wrapper').html('').append(canvas);
+                    canvas.width = 60;
+                    canvas.height = 60;
+                    canvas.setAttribute('class', 'img-circle');
+
+                    var context = canvas.getContext('2d');
+                    var image = new Image();
+                    image.src = $scope.thumb.data;
+
+                    context.drawImage(image,
+                        $scope.profileCoordinates.x,
+                        $scope.profileCoordinates.y,
+                        $scope.profileCoordinates.w,
+                        $scope.profileCoordinates.h,
+                        0,
+                        0,
+                        60,
+                        60
+                    );
+
+                    $scope.canvas = canvas;
+
+                    if ($scope.$root.$$phase !== '$apply' && $scope.$root.$$phase !== '$digest') {
+                        $scope.$apply();
+                    }
+                };
+
+                $scope.initProfileImageJcrop = function() {
+                    $scope.el.find('.site-uploader-profile-image').Jcrop({
+                        minSize : [60, 60],
+                        setSelect : [0, 0, 60, 60], //@TODO middle coordinates
+                        onChange: $scope.onChangeProfileImage,
+                        onSelect: $scope.onChangeProfileImage,
+                        aspectRatio: 1
+                    }, function() {
+                        $scope.profileJcrop = this;
+                    });
                 };
 
                 $scope.canvas = null;
@@ -123,6 +216,10 @@ angular.module('siteApp')
                     );
 
                     $scope.canvas = canvas;
+
+                    if ($scope.$root.$$phase !== '$apply' && $scope.$root.$$phase !== '$digest') {
+                        $scope.$apply();
+                    }
                 };
 
                 $scope.reload = function() {
@@ -145,6 +242,71 @@ angular.module('siteApp')
 
                 $scope.mainJcrop = null;
 
+                $scope.backFromProfile = function() {
+                    $scope.thumb = {
+                        display : false,
+                        data : ''
+                    };
+
+                    if ($scope.profileJcrop) {
+                        $scope.profileJcrop.destroy();
+                    }
+                };
+
+                $scope.handleFile = function(file) {
+                    var reader;
+
+                    if (!file) return;
+
+                    $(this).val('');
+
+                    if (file.size > parseInt($scope.maxSize, 10)) {
+                        $scope.error = {
+                            status : true,
+                            message : 'File "' + file.name + '" is too big'
+                        };
+                    } else {
+                        if ($scope.isSupportedType(file.type)) {
+                            $scope.error = {
+                                status : false,
+                                message : ''
+                            };
+
+                            reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                $scope.image = {
+                                    display: true,
+                                    data: e.target.result
+                                };
+                                $scope.$apply();
+
+                                $scope.el.find('.site-uploader-image.site-uploader-main-image').Jcrop({
+                                    minSize : [200, 200],
+                                    setSelect : [0, 0, 200, 200], //@TODO middle coordinates
+                                    onChange: $scope.onChange,
+                                    onSelect: $scope.onChange,
+                                    aspectRatio: 1
+                                }, function() {
+                                    $scope.mainJcrop = this;
+                                });
+
+                            };
+
+                            reader.readAsDataURL(file);
+
+
+                        } else {
+                            $scope.error = {
+                                status : true,
+                                message : "We don't support this file format. Please choose an image in JPG, GIF or PNG."
+                            };
+                        }
+                    }
+
+                    $scope.$apply();
+                }
+
             },
             link: function postLink(scope, element, attrs) {
                 scope.el = element;
@@ -154,58 +316,9 @@ angular.module('siteApp')
                 });
 
                 element.delegate('input', 'change', function() {
-                    var file = this.files[0],
-                        reader;
+                    var file = this.files[0];
 
-                    if (!file) return;
-
-                    $(this).val('');
-
-                    if (file.size > parseInt(scope.maxSize, 10)) {
-                        scope.error = {
-                            status : true,
-                            message : 'File "' + file.name + '" is too big'
-                        };
-                    } else {
-                        if (scope.isSupportedType(file.type)) {
-                            scope.error = {
-                                status : false,
-                                message : ''
-                            };
-
-                            reader = new FileReader();
-
-                            reader.onload = function (e) {
-                                scope.image = {
-                                    display: true,
-                                    data: e.target.result
-                                };
-                                scope.$apply();
-
-                                element.find('.site-uploader-image.site-uploader-main-image').Jcrop({
-                                    minSize : [200, 200],
-                                    setSelect : [0, 0, 200, 200], //@TODO middle coordinates
-                                    onChange: $scope.onChange,
-                                    onSelect: $scope.onChange,
-                                    aspectRatio: 1
-                                }, function() {
-                                    scope.mainJcrop = this;
-                                });
-
-                            };
-
-                            reader.readAsDataURL(file);
-
-
-                        } else {
-                            scope.error = {
-                                status : true,
-                                message : "We don't support this file format. Please choose an image in JPG, GIF or PNG."
-                            };
-                        }
-                    }
-
-                    scope.$apply();
+                    $scope.handleFile(file);
                 });
             }
         };

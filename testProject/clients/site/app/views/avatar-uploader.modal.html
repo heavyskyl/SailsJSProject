@@ -16,7 +16,8 @@
             </span>
             <input type="file" size="30">
         </div>
-        <div class="site-drag-n-drop-area">
+        <div class="site-drag-n-drop-area" drag-events data-drop="drop" data-dragenter="dragenter"
+             data-dragleave="dragleave" ng-class="{ 'site-drag-n-drop-area-active' : dragIn.status }">
             Or drag'n'drop file here
         </div>
     </div>
@@ -43,8 +44,13 @@
 
     <div class="site-uploader-profile-wrapper" ng-hide="true"></div>
 
+    <span class="text text-danger site-uploder-select-area-error" ng-show="!canNext()">
+        <i class="fa fa-exclamation-triangle"></i>
+        Please select an area of the photo
+    </span>
     <hr />
-    <button class="btn btn-primary" ng-click="next()">Next</button>
+
+    <button class="btn btn-primary" ng-click="next()" ng-disabled="!canNext()">Next</button>
     <a ng-click="back()">Back</a>
 </div>
 <div ng-show="image.display && thumb.display">
@@ -52,7 +58,17 @@
         Now select a square area for your profile miniature.<br />
         The miniature will appear next to your posts, private messages and comments.
     </p>
-    <div style="width: 200px; height: 200px; overflow: hidden;">
-        <img ng-src="{{thumb.data}}" class="site-uploader-image"/>
+    <div class="site-uploader-img-profile-wrapper">
+        <img ng-src="{{thumb.data}}" class="site-uploader-image site-uploader-profile-image"
+             onimageload data-on-load-callback="initProfileImageJcrop"/>
+        <div class="site-uploader-profile-thumb-wrapper"></div>
     </div>
+
+    <span class="text text-danger site-uploder-select-area-error" ng-show="!canSave()">
+        <i class="fa fa-exclamation-triangle"></i>
+        Please select an area of the photo
+    </span>
+    <hr />
+    <button class="btn btn-primary" ng-click="save()" ng-disabled="!canSave()">Save</button>
+    <a ng-click="backFromProfile()">Back</a>
 </div>

@@ -46,13 +46,27 @@ avatar-uploader {
     width: 100%;
   }
 
+  .site-uploader-img-profile-wrapper {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+  }
+
   a {
     cursor: pointer;
+  }
+
+  .site-uploader-main-image {
+    height: auto !important;
   }
 
   .site-uploader-error {
     position: absolute;
     margin-top: 8px;
+  }
+
+  .site-uploder-select-area-error {
+    position: absolute;
   }
 
   .site-uploader-image {
@@ -91,6 +105,17 @@ avatar-uploader {
       text-align: center;
       line-height: 45px;
     }
+
+    .site-drag-n-drop-area.site-drag-n-drop-area-active {
+      background-color: #ebebeb;
+      opacity: 0.6;
+    }
+  }
+
+  .site-uploader-profile-thumb-wrapper {
+    position: absolute;
+    margin-top: -130px;
+    margin-left: 348px;
   }
 }
 
