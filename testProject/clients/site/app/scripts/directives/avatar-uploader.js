@@ -9,7 +9,7 @@ angular.module('siteApp')
                 maxSize: '@'
             },
             controller: function($scope) {
-                window.$scope = $scope;
+
                 $scope.error = {
                     status : false,
                     message : ''
@@ -242,7 +242,7 @@ angular.module('siteApp')
                     }
 
                     $scope.el.find('.site-uploader-image.site-uploader-main-image').attr('style', '').attr('src', '');
-                    console.log($scope.fromWebCamPage);
+
                     if ($scope.fromWebCamPage) {
                         $scope.webCam = true;
                     }
@@ -396,20 +396,33 @@ angular.module('siteApp')
                     $scope.fromWebCamPage = false;
                 };
 
+                $scope.close = function() {
+                    $scope.reload();
+                    $scope.webCam = false;
+                    $scope.fromWebCamPage = false;
+                };
+
+                $scope.save = function() {
+                    $scope.$emit('avatar-picked', {
+                        thumb: $scope.el.find('.site-uploader-profile-thumb-wrapper canvas').get(0).toDataURL(),
+                        profile: $scope.thumb.data,
+                        full: $scope.image.data
+                    });
+                    $scope.modal.hide();
+                };
+
+                $scope.modal = {};
+
             },
             link: function postLink(scope, element, attrs) {
                 scope.el = element;
 
-                scope.$on('modal.hide', function(e) {
-                    scope.reload();
-                    $scope.webCam = false;
-                    $scope.fromWebCamPage = false;
-                });
+                scope.$on('modal.hide', scope.close);
 
                 element.delegate('input', 'change', function() {
                     var file = this.files[0];
 
-                    $scope.handleFile(file);
+                    scope.handleFile(file);
                 });
             }
         };

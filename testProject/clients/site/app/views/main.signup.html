@@ -13,7 +13,9 @@
                     <div class="col-xs-12 col-md-6">
                         <div class="form-group">
                             <img class="img-circle site-avatar-medium site-sign-up-avatar-preview"
-                                 src="images/default-avatar.gif" />
+                                 src="images/default-avatar.gif" ng-show="!avatar.thumb"/>
+                            <img class="img-circle site-avatar-medium site-sign-up-avatar-preview"
+                                 ng-src="{{avatar.thumb}}" ng-show="avatar.thumb"/>
                         </div>
                     </div>
                 </div>
