@@ -1,4 +1,4 @@
-<div ng-show="!image.display">
+<div ng-show="!image.display && !webCam">
     <p>
         Please upload a real photo of yourself, so that friends can recognize you.
         <br />
@@ -26,9 +26,19 @@
         If you have any problems with your upload, try using a smaller picture.
         <br />
         If you have a web-cam, you can
-        <a>take an instant shot</a>
+        <a ng-click="showWebCamPage()">take an instant shot</a>
         <i class="fa fa-video-camera"></i>
     </p>
+</div>
+<div ng-show="webCam">
+    <video class="site-upload-web-cam-video"></video>
+    <canvas class="site-upload-web-cam-canvas"></canvas>
+    <img class="site-upload-web-cam-image" />
+
+    <hr />
+
+    <button class="btn btn-primary" ng-click="takeScreenShot()">Capture image</button>
+    <a ng-click="backFromWebCam()">Back</a>
 </div>
 <div ng-show="image.display && !thumb.display">
     <p>

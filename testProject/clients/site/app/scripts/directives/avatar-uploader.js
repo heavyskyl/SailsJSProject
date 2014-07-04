@@ -129,6 +129,8 @@ angular.module('siteApp')
                     return ((c.x !== c.x2) && (c.y !== c.y2));
                 };
 
+                $scope.fromWebCamPage = false;
+
                 $scope.next = function() {
 
                     $scope.el.find('.site-uploader-profile-image').attr('src', '');
@@ -238,6 +240,12 @@ angular.module('siteApp')
                     if ($scope.mainJcrop) {
                         $scope.mainJcrop.destroy();
                     }
+
+                    $scope.el.find('.site-uploader-image.site-uploader-main-image').attr('style', '').attr('src', '');
+                    console.log($scope.fromWebCamPage);
+                    if ($scope.fromWebCamPage) {
+                        $scope.webCam = true;
+                    }
                 };
 
                 $scope.mainJcrop = null;
@@ -305,7 +313,88 @@ angular.module('siteApp')
                     }
 
                     $scope.$apply();
-                }
+                };
+
+                $scope.webCam = false;
+
+                $scope.showWebCamPage = function() {
+                    var streaming = false,
+                        video        = $scope.el.find('.site-upload-web-cam-video').get(0),
+                        canvas       = $scope.el.find('.site-upload-web-cam-canvas').get(0);
+
+                    $scope.webCam = true;
+
+                    navigator.getMedia = ( navigator.getUserMedia ||
+                        navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia ||
+                        navigator.msGetUserMedia);
+
+                    navigator.getMedia(
+                        {
+                            video: true,
+                            audio: false
+                        },
+                        function(stream) {
+                            if (navigator.mozGetUserMedia) {
+                                video.mozSrcObject = stream;
+                            } else {
+                                var vendorURL = window.URL || window.webkitURL;
+                                video.src = vendorURL.createObjectURL(stream);
+                            }
+                            video.play();
+                        },
+                        function(err) {
+                            console.log("An error occured! " + err);
+                        }
+                    );
+
+                    video.addEventListener('canplay', function(ev){
+                        if (!streaming) {
+                            streaming = true;
+                        }
+                    }, false);
+                };
+
+                $scope.takeScreenShot = function() {
+                    var $video = $scope.el.find('.site-upload-web-cam-video'),
+                        $canvas = $scope.el.find('.site-upload-web-cam-canvas'),
+                        $image = $scope.el.find('.site-uploader-image.site-uploader-main-image');
+
+                    $scope.fromWebCamPage = true;
+
+                    function onImageLoad() {
+                        $image.off('load', onImageLoad);
+                        $image.Jcrop({
+                            minSize : [200, 200],
+                            setSelect : [0, 0, 200, 200], //@TODO middle coordinates
+                            onChange: $scope.onChange,
+                            onSelect: $scope.onChange,
+                            aspectRatio: 1
+                        }, function() {
+                            $scope.mainJcrop = this;
+                        });
+                    }
+
+                    $canvas.get(0).width = $video.width();
+                    $canvas.get(0).height = $video.height();
+
+                    $canvas.get(0).getContext('2d').drawImage($video.get(0), 0, 0, $video.width(), $video.height());
+                    var data = $canvas.get(0).toDataURL();
+
+                    $image.on('load', onImageLoad);
+
+                    $scope.image = {
+                        display: true,
+                        data: data
+                    };
+
+                    $scope.webCam = false;
+                };
+
+                $scope.backFromWebCam = function() {
+                    $scope.webCam = false;
+                    $scope.fromWebCamPage = false;
+                };
 
             },
             link: function postLink(scope, element, attrs) {
@@ -313,6 +402,8 @@ angular.module('siteApp')
 
                 scope.$on('modal.hide', function(e) {
                     scope.reload();
+                    $scope.webCam = false;
+                    $scope.fromWebCamPage = false;
                 });
 
                 element.delegate('input', 'change', function() {
