@@ -416,9 +416,9 @@ angular.module('siteApp')
                 };
 
                 $scope.close = function() {
-                    $scope.reload();
                     $scope.webCam = false;
                     $scope.fromWebCamPage = false;
+                    $scope.reload();
                     $scope.stopMediaStream();
                 };
 
@@ -429,6 +429,7 @@ angular.module('siteApp')
                         full: $scope.image.data
                     });
                     $scope.modal.hide();
+                    $scope.stopMediaStream();
                 };
 
                 $scope.modal = {};
