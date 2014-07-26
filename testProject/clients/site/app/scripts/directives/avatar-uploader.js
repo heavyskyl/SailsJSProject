@@ -244,7 +244,7 @@ angular.module('siteApp')
                     $scope.el.find('.site-uploader-image.site-uploader-main-image').attr('style', '').attr('src', '');
 
                     if ($scope.fromWebCamPage) {
-                        $scope.webCam = true;
+                        $scope.showWebCamPage();
                     }
                 };
 
@@ -317,6 +317,21 @@ angular.module('siteApp')
 
                 $scope.webCam = false;
 
+                $scope.stopMediaStream = function() {
+                    var video = $scope.el.find('.site-upload-web-cam-video').get(0);
+
+                    if (video) {
+                        video.pause();
+                        video.src = '';
+                    }
+
+                    if ($scope.stream) {
+                        $scope.stream.stop();
+                    }
+                };
+
+                $scope.stream = null;
+
                 $scope.showWebCamPage = function() {
                     var streaming = false,
                         video        = $scope.el.find('.site-upload-web-cam-video').get(0),
@@ -335,6 +350,8 @@ angular.module('siteApp')
                             audio: false
                         },
                         function(stream) {
+                            $scope.stream = stream;
+
                             if (navigator.mozGetUserMedia) {
                                 video.mozSrcObject = stream;
                             } else {
@@ -389,17 +406,20 @@ angular.module('siteApp')
                     };
 
                     $scope.webCam = false;
+                    $scope.stopMediaStream();
                 };
 
                 $scope.backFromWebCam = function() {
                     $scope.webCam = false;
                     $scope.fromWebCamPage = false;
+                    $scope.stopMediaStream();
                 };
 
                 $scope.close = function() {
                     $scope.reload();
                     $scope.webCam = false;
                     $scope.fromWebCamPage = false;
+                    $scope.stopMediaStream();
                 };
 
                 $scope.save = function() {
