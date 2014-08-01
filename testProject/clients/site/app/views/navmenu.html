@@ -23,7 +23,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li ng-show="isAuthenticated()">
                     <a href="/user/profile/<%- req.user.id %>">
-                        <img src="{{user.avatarUrl}}" class="img-circle site-avatar-medium site-nav-avatar" />
+                        <img ng-src="{{user.avatar.thumb}}" class="img-circle site-avatar-medium site-nav-avatar" />
                     </a>
                 </li>
                 <li ng-show="isAuthenticated()">

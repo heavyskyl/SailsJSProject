@@ -17,6 +17,7 @@ angular.module('siteApp')
 
         $scope.$on('avatar-picked', function (e, data) {
             $scope.avatar = data;
+            $scope.user.avatar = JSON.stringify(data);
         });
 
         $scope.user = {};
@@ -27,7 +28,6 @@ angular.module('siteApp')
             $scope.user._csrf = csrf._csrf;
 
             $sails.get('/user/create', $scope.user).success(function (data) {
-                console.log(data);
                 if (data.error !== true) {
                     $scope.user = {};
                     user.login(data.user);

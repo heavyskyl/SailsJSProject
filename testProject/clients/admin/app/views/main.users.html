@@ -1,7 +1,7 @@
 <table ng-table="tableParams" show-filter="true" class="table">
     <tr ng-repeat="user in $data">
         <td data-title="'Display name'" filter="{ 'displayName': 'text' }">
-            <img class="img-circle site-avatar-small site-user-avatar pull-left" src="{{user.avatarUrl}}" />
+            <img class="img-circle site-avatar-small site-user-avatar pull-left" src="{{user.avatar.thumb}}" />
             {{user.displayName}}<br/>
             <span class="text-info site-user-date">{{user.createdAt | date}}</span>
         </td>

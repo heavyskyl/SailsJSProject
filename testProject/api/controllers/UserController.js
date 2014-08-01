@@ -14,32 +14,7 @@
  *
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
-
-function getRole(role) {
-    switch(role) {
-        case 100 :
-            return 'user';
-            break;
-        case 200 :
-            return 'moderator';
-            break;
-        case 300 :
-            return 'admin';
-            break;
-        case 400 :
-            return 'super-admin';
-            break;
-        default :
-            return 'Unknown Role ' + role;
-            break;
-    }
-}
-
 module.exports = {
-
-    'new' : function (req, res) {
-        res.view();
-    },
 
     'create' : function(req, res, next) {
         User.create(req.params.all(), function(err, user) {
