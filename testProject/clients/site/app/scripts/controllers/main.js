@@ -13,6 +13,12 @@ angular.module('siteApp')
             return $scope.user ? true : false;
         };
 
+        $scope.isAdmin = function () {
+            if ($scope.user) {
+                return $scope.user.role >= 300;
+            }
+        };
+
         $scope.logout = function () {
             return user.logout();
         };

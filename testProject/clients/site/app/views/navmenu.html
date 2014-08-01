@@ -14,17 +14,16 @@
                 <li ui-sref-active="active">
                     <a ui-sref="main.index">Home</a>
                 </li>
-
-                <li>
+                <li ng-if="isAuthenticated()" ui-sref-active="active">
+                    <a ui-sref="main.profile({ userId: user.id })">Profile</a>
+                </li>
+                <li ng-if="isAdmin()">
                     <a href="/admin">Admin Panel</a>
                 </li>
-
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li ng-show="isAuthenticated()">
-                    <a href="/user/profile/<%- req.user.id %>">
-                        <img ng-src="{{user.avatar.thumb}}" class="img-circle site-avatar-medium site-nav-avatar" />
-                    </a>
+                    <img ng-src="{{user.avatar.thumb}}" class="img-circle site-avatar-medium site-nav-avatar" />
                 </li>
                 <li ng-show="isAuthenticated()">
                     <a ng-click="logout()">Log Out</a>
