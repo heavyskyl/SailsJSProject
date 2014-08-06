@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('siteApp')
-    .controller('MainCtrl', function ($scope, $state, user, csrf, $sails) {
+    .controller('MainCtrl', function ($scope, $state, user, csrf, $sails, userLoader) {
 
         user.subscribe($scope);
 
@@ -45,6 +45,20 @@ angular.module('siteApp')
                     $scope.loginErrorMsg = data.message;
                 }
             });
+        };
+
+        $scope.isMyProfile = function () {
+            return ($state.current.name === 'main.profile') && ($state.params.userId === $scope.user.id);
+        };
+
+        userLoader.all().then(function (data) {
+            $scope.users = data;
+        });
+
+        $scope.goToProfilePage = function (user) {
+            $state.go('main.profile', {
+                userId: user.id
+            })
         };
 
     });

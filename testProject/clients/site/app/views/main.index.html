@@ -1,6 +1,15 @@
-<h1>main.index</h1>
-<div ng-repeat="m in messages">
-    <span>{{m.text}}</span>
+<div class="row">
+    <div class="col-sm-6 col-md-4" ng-repeat="user in users">
+        <div class="thumbnail">
+            <img ng-src="{{user.avatar.profile}}">
+            <div class="caption">
+                <h3>{{user.displayName}}</h3>
+                <p>{{user.firstName}} {{user.lastName}}</p>
+                <p>
+                    <button class="btn btn-primary" ng-click="goToProfilePage(user)">Profile</button>
+                    <button class="btn btn-default">Button</button>
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
-<input type="text" ng-model="message" placeholder="Input .." />
-<button class="btn btn-success" ng-click="sendMessage()">Send</button>

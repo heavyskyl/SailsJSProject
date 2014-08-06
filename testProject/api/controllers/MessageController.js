@@ -24,13 +24,17 @@ module.exports = {
     */
 
     subscribe: function (req, res) {
+        var userId = req.param('userId');
+
+        console.log('userId: ' + userId);
+
         Message.find(function(err, messages) {
             if (err) {
                 throw err;
             }
 
-            Message.subscribe(req.socket);
-            Message.subscribe(req.socket, messages);
+            Message.subscribe(req.socket, userId);
+            //Message.subscribe(req.socket, messages);
 
             res.send(messages);
         });

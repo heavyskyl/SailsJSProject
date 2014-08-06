@@ -1,0 +1,20 @@
+<div class="panel panel-info">
+    <div class="panel-heading">Panel heading without title</div>
+    <div class="panel-body">
+
+        <ul>
+            <li ng-repeat="m in messages">
+                <span>{{m.text}}</span>
+            </li>
+        </ul>
+
+        <hr />
+
+        <div class="input-group">
+            <input type="text" ng-model="message" placeholder="Input message" class="form-control"/>
+            <span class="input-group-addon btn btn-info" ng-click="sendMessage()">
+                <span class="glyphicon glyphicon-send text-info"></span>
+            </span>
+        </div>
+    </div>
+</div>

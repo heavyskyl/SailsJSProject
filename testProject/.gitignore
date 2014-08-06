@@ -8,3 +8,4 @@ node_modules
 *.iml
 *.log
 config/amazons3.js
+www

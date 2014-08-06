@@ -34,8 +34,9 @@ module.exports.routes = {
   // (This would also work if you had a file at: `/views/home.ejs`)
   '/': {
     view: 'static/index'
-  }
+  },
 
+  '/message/subscribe/:userId': 'MessageController.subscribe'
   /*
   // But what if you want your home page to display
   // a signup form located at `views/user/signup.ejs`?

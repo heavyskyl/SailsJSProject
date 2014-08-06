@@ -1,1 +1,13 @@
-<img ng-src="{{user.avatar.profile}}" />
+<div ng-init="loadUser()">
+
+    <server-error ng-if="error" data-error="error"></server-error>
+
+    <ng-include ng-if="userLoaderData.myProfile"
+                src="'views/main.profile.my.html'"
+                ng-controller="MyProfileCtrl"></ng-include>
+
+    <ng-include ng-if="userLoaderData.myProfile === false"
+                src="'views/main.profile.other.html'"
+                ng-controller="OtherProfileCtrl"></ng-include>
+
+</div>

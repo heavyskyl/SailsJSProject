@@ -14,7 +14,7 @@
                 <li ui-sref-active="active">
                     <a ui-sref="main.index">Home</a>
                 </li>
-                <li ng-if="isAuthenticated()" ui-sref-active="active">
+                <li ng-if="isAuthenticated()" ng-class="{ 'active': isMyProfile() }">
                     <a ui-sref="main.profile({ userId: user.id })">Profile</a>
                 </li>
                 <li ng-if="isAdmin()">

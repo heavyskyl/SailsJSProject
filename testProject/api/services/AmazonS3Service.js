@@ -7,7 +7,17 @@ var _ = require('lodash'),
         'accessKeyId': amazonS3conf.accessKeyId,
         'secretAccessKey': amazonS3conf.secretAccessKey,
         'region': amazonS3[amazonS3conf.region]
-    });
+    }),
+    imageTypes = ['jpg', 'jpeg', 'gif', 'png'];
+
+function addImageContentType(filename, options) {
+    var index = filename.lastIndexOf('.') + 1,
+        format = filename.substr(index);
+
+    if (imageTypes.indexOf(format) !== -1) {
+        options.ContentType = 'image/' + format;
+    }
+}
 
 module.exports = {
 
@@ -23,6 +33,8 @@ module.exports = {
                 Body: bodyStream,
                 Acl: 'public-read'
             };
+
+            addImageContentType(filename, options);
 
             s3.PutObject(options, function (err, data) {
                 cb(err, data);
